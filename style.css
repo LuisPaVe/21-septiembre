@@ -175,13 +175,14 @@ body {
   margin: auto;
   pointer-events: auto;
   z-index: 20;
+  flex-shrink: 0; /* Previene que Flexbox empuje o distorsione el alto 800px */
 }
 
 /* Escala dinámica para móviles en vertical y desactivación de filtros pesados */
 @media (max-width: 640px) {
   .flower-garden-container.mobile-vertical {
-    /* Calculamos la escala exacta según el ancho de la pantalla para que nunca se desborde */
-    transform: scale(calc(100vw / 620)) translateY(-5%);
+    /* Usamos una variable inyectada por JS, Safari iOS no soporta calc() con divisiones cruzadas en transform */
+    transform: scale(var(--mobile-scale, 0.55)) translateY(-5%);
     transform-origin: center top;
   }
   
