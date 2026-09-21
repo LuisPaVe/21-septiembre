@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Flores Amarillas ✨</title>
+  <meta name="description"
+    content="Flores amarillas hiperrealistas con botánica en espiral áurea, vaivén natural y partículas de luz.">
+
+  <!-- Google Fonts: Outfit & Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="night-sky-background w-full h-full relative select-none">
+
+  <!-- Pantalla de Bienvenida (Intro Screen con Glassmorphism) -->
+  <div id="intro-screen">
+      <button class="gift-btn" onclick="openGift()">
+          Tienes un regalo de mi parte. Toca para abrir 💛
+      </button>
+  </div>
+
+  <!-- Contenedor Principal (oculto inicialmente por CSS) -->
+  <div id="main-content" class="hidden-initially">
+    <!-- Lienzo de partículas ambientales (Luciérnagas, polvo estelar y pétalos 3D) -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Barra de controles sutil y minimalista en la esquina superior -->
+    <aside class="minimal-controls">
+      <button id="btn-audio" class="glass-pill-btn" title="Música ambiental relajante">
+        <span id="audio-icon">🎵</span>
+        <span id="audio-label">Música</span>
+        <div id="audio-wave" class="flex items-center gap-0.5 h-3 px-0.5"
+          style="display: inline-flex; align-items: center; gap: 2px;">
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+          <div class="audio-bar"></div>
+        </div>
+      </button>
+
+      <button id="btn-petal-rain" class="glass-pill-btn" title="Lanzar lluvia de pétalos dorados">
+        <span>🌸</span>
+        <span>Pétalos</span>
+      </button>
+
+      <button id="btn-reflower" class="glass-pill-btn" title="Volver a florecer">
+        <span>🔄</span>
+      </button>
+    </aside>
+
+    <!-- Escenario Principal: Ramo de Flores Amarillas Hiperrealistas -->
+    <main class="stage-wrapper">
+      <!-- Capa de Mariposas mágicas con vuelo orgánico y escarcha -->
+      <div id="butterflies-layer" class="butterflies-layer"></div>
+
+      <!-- Ajustamos la disposición para Mobile (Ramo Vertical) -->
+      <div id="garden-stage" class="flower-garden-container mobile-vertical">
+
+        <!-- Halo de resplandor ambiental cálido -->
+        <div class="ambient-flower-glow"></div>
+
+        <!-- SVG Botánico reajustado para ser más vertical (escala y posiciones) -->
+        <!-- viewBox más alto y angosto -->
+        <svg class="bouquet-stems-svg" viewBox="0 0 600 800" fill="none">
+          <defs>
+            <linearGradient id="stemCylinderGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#022c22" />
+              <stop offset="25%" stop-color="#059669" />
+              <stop offset="60%" stop-color="#10b981" />
+              <stop offset="85%" stop-color="#34d399" />
+              <stop offset="100%" stop-color="#047857" />
+            </linearGradient>
+
+            <linearGradient id="stemCylinderGrad2" x1="100%" y1="0%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#022c22" />
+              <stop offset="25%" stop-color="#059669" />
+              <stop offset="60%" stop-color="#10b981" />
+              <stop offset="85%" stop-color="#34d399" />
+              <stop offset="100%" stop-color="#047857" />
+            </linearGradient>
+
+            <linearGradient id="leafGradLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#34d399" />
+              <stop offset="40%" stop-color="#10b981" />
+              <stop offset="80%" stop-color="#047857" />
+              <stop offset="100%" stop-color="#022c22" />
+            </linearGradient>
+
+            <linearGradient id="leafGradRight" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#34d399" />
+              <stop offset="40%" stop-color="#10b981" />
+              <stop offset="80%" stop-color="#047857" />
+              <stop offset="100%" stop-color="#022c22" />
+            </linearGradient>
+          </defs>
+
+          <!-- Tallo 1 (Izquierda abajo: flor 1 a 150, 400) -->
+          <path d="M 300 750 Q 200 600 150 400" stroke="url(#stemCylinderGrad1)" stroke-width="8.5" stroke-linecap="round" class="stem-line" />
+          <!-- Tallo 2 (Izquierda arriba: flor 2 a 220, 250) -->
+          <path d="M 300 750 Q 250 500 220 250" stroke="url(#stemCylinderGrad1)" stroke-width="9" stroke-linecap="round" class="stem-line" />
+          <!-- Tallo 3 (Central reina: flor 3 a 300, 120) -->
+          <path d="M 300 750 Q 300 450 300 120" stroke="url(#stemCylinderGrad1)" stroke-width="10" stroke-linecap="round" class="stem-line" />
+          <!-- Tallo 4 (Derecha arriba: flor 4 a 380, 250) -->
+          <path d="M 300 750 Q 350 500 380 250" stroke="url(#stemCylinderGrad2)" stroke-width="9" stroke-linecap="round" class="stem-line" />
+          <!-- Tallo 5 (Derecha abajo: flor 5 a 450, 400) -->
+          <path d="M 300 750 Q 400 600 450 400" stroke="url(#stemCylinderGrad2)" stroke-width="8.5" stroke-linecap="round" class="stem-line" />
+
+          <!-- Hojas botánicas simplificadas para nueva distribución -->
+          <g class="svg-leaf" style="animation-delay: 0.8s;">
+            <path d="M 280 500 Q 200 480 230 420 Q 260 430 280 500 Z" fill="url(#leafGradLeft)" />
+          </g>
+          <g class="svg-leaf" style="animation-delay: 1.0s;">
+            <path d="M 320 600 Q 400 550 370 500 Q 350 530 320 600 Z" fill="url(#leafGradRight)" />
+          </g>
+        </svg>
+
+        <!-- ================= Flor 1 ================= -->
+        <div class="flower-item sway-3" style="left: 25%; top: 50%;">
+          <div class="flower-head scale-95" data-flower-id="1">
+            <div class="sepals-layer" id="flower-1-sepals"></div>
+            <div class="petals-layer outer" id="flower-1-outer"></div>
+            <div class="petals-layer middle" id="flower-1-middle"></div>
+            <div class="petals-layer inner" id="flower-1-inner"></div>
+            <div class="flower-center-fibonacci">
+              <canvas class="fibonacci-canvas" id="fibonacci-1"></canvas>
+              <div class="pollen-corona"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= Flor 2 ================= -->
+        <div class="flower-item sway-1" style="left: 36.6%; top: 31.2%;">
+          <div class="flower-head scale-105" data-flower-id="2">
+            <div class="sepals-layer" id="flower-2-sepals"></div>
+            <div class="petals-layer outer" id="flower-2-outer"></div>
+            <div class="petals-layer middle" id="flower-2-middle"></div>
+            <div class="petals-layer inner" id="flower-2-inner"></div>
+            <div class="flower-center-fibonacci">
+              <canvas class="fibonacci-canvas" id="fibonacci-2"></canvas>
+              <div class="pollen-corona"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= Flor 3 ================= -->
+        <div class="flower-item sway-2" style="left: 50%; top: 15%;">
+          <div class="flower-head scale-120" data-flower-id="3">
+            <div class="sepals-layer" id="flower-3-sepals"></div>
+            <div class="petals-layer outer" id="flower-3-outer"></div>
+            <div class="petals-layer middle" id="flower-3-middle"></div>
+            <div class="petals-layer inner" id="flower-3-inner"></div>
+            <div class="flower-center-fibonacci">
+              <canvas class="fibonacci-canvas" id="fibonacci-3"></canvas>
+              <div class="pollen-corona"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= Flor 4 ================= -->
+        <div class="flower-item sway-4" style="left: 63.3%; top: 31.2%;">
+          <div class="flower-head scale-105" data-flower-id="4">
+            <div class="sepals-layer" id="flower-4-sepals"></div>
+            <div class="petals-layer outer" id="flower-4-outer"></div>
+            <div class="petals-layer middle" id="flower-4-middle"></div>
+            <div class="petals-layer inner" id="flower-4-inner"></div>
+            <div class="flower-center-fibonacci">
+              <canvas class="fibonacci-canvas" id="fibonacci-4"></canvas>
+              <div class="pollen-corona"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= Flor 5 ================= -->
+        <div class="flower-item sway-5" style="left: 75%; top: 50%;">
+          <div class="flower-head scale-95" data-flower-id="5">
+            <div class="sepals-layer" id="flower-5-sepals"></div>
+            <div class="petals-layer outer" id="flower-5-outer"></div>
+            <div class="petals-layer middle" id="flower-5-middle"></div>
+            <div class="petals-layer inner" id="flower-5-inner"></div>
+            <div class="flower-center-fibonacci">
+              <canvas class="fibonacci-canvas" id="fibonacci-5"></canvas>
+              <div class="pollen-corona"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lazo satinado de regalo en la unión del ramo -->
+        <div class="bouquet-ribbon" title="Ramo de Flores Amarillas" style="top: 750px;">
+          <div class="ribbon-bows">
+            <div class="ribbon-loop left"></div>
+            <div class="ribbon-loop right"></div>
+          </div>
+          <div class="ribbon-knot"></div>
+          <div class="ribbon-tails">
+            <div class="ribbon-tail left"></div>
+            <div class="ribbon-tail right"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Notificación Toast discreta -->
+    <div id="toast" role="alert">
+      <span class="text-amber-400">✨</span>
+      <span id="toast-message">Notificación</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
