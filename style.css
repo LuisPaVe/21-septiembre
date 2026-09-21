@@ -190,8 +190,9 @@ body {
   }
   
   .botanical-petal {
-    box-shadow: none !important; /* Evitar 3 capas de box-shadow por cada uno de los 200+ pétalos */
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)) !important;
+    /* Se restaura el volumen interior (inset) pero se elimina el resplandor exterior pesado para mantener el rendimiento */
+    box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.75), inset 0 -6px 10px rgba(113, 63, 18, 0.6) !important;
+    filter: none !important;
   }
   
   .night-sky-background {

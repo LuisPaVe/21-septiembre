@@ -121,9 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function buildRealisticPetals() {
     const isMobile = window.innerWidth < 640;
     const tierConfig = isMobile ? [
-      { name: 'outer', count: 12, baseLength: 70, baseWidth: 24, baseY: -24, tiltX: 14, offsetAngle: 0 },
-      // Capa media eliminada en móviles para ahorrar casi 100 nodos DOM 3D
-      { name: 'inner', count: 8, baseLength: 50, baseWidth: 20, baseY: -16, tiltX: -8, offsetAngle: 18 }
+      { name: 'outer', count: 14, baseLength: 74, baseWidth: 25, baseY: -26, tiltX: 14, offsetAngle: 0 },
+      { name: 'middle', count: 12, baseLength: 66, baseWidth: 23, baseY: -22, tiltX: 6, offsetAngle: 10 },
+      { name: 'inner', count: 10, baseLength: 54, baseWidth: 20, baseY: -18, tiltX: -8, offsetAngle: 18 }
     ] : [
       { name: 'outer', count: 22, baseLength: 82, baseWidth: 27, baseY: -32, tiltX: 14, offsetAngle: 0 },
       { name: 'middle', count: 18, baseLength: 74, baseWidth: 25, baseY: -26, tiltX: 6, offsetAngle: 10 },
