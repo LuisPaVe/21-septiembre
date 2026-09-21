@@ -148,6 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
           const isMobileScale = window.innerWidth < 640 ? 0.65 : 1;
           const translateY = window.innerWidth < 640 ? '-18px' : '-26px';
           const scaleJitter = (0.9 + Math.random() * 0.2) * isMobileScale;
+          
+          sepal.style.left = 'calc(50% - 11px)';
+          sepal.style.top = 'calc(50% - 30px)';
           sepal.style.transform = `rotate(${sAngle}deg) translateY(${translateY}) scale(${scaleJitter})`;
           sepalsContainer.appendChild(sepal);
         }
@@ -171,7 +174,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const petal = document.createElement('div');
           petal.className = 'botanical-petal';
+          
+          // Asignar tamaño y posición absoluta de forma matemática para evitar desajustes en Safari iOS
+          petal.style.width = `${tier.baseWidth}px`;
           petal.style.height = `${length}px`;
+          petal.style.left = `calc(50% - ${tier.baseWidth / 2}px)`;
+          petal.style.top = `calc(50% - ${length / 2}px)`;
+          
           petal.style.transform = `rotate(${angle}deg) translateY(${tier.baseY}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
           
           container.appendChild(petal);
