@@ -171,8 +171,7 @@ body {
   position: relative;
   width: 600px;
   height: 800px;
-  max-width: 100vw;
-  max-height: 100vh;
+  /* Eliminados max-width y max-height para evitar que el contenedor colapse su aspect-ratio original */
   margin: auto;
   pointer-events: auto;
   z-index: 20;
@@ -181,7 +180,8 @@ body {
 /* Escala dinámica para móviles en vertical y desactivación de filtros pesados */
 @media (max-width: 640px) {
   .flower-garden-container.mobile-vertical {
-    transform: scale(0.65) translateY(-5%);
+    /* Calculamos la escala exacta según el ancho de la pantalla para que nunca se desborde */
+    transform: scale(calc(100vw / 620)) translateY(-5%);
     transform-origin: center top;
   }
   
