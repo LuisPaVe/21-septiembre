@@ -45,10 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(introScreen) introScreen.classList.add('hidden');
     if(mainContent) mainContent.classList.add('visible');
     
-    // Iniciar lluvia y audio tras revelarse
+    // Iniciar audio SÍNCRONAMENTE fuera de setTimeout (Requerido por iOS/Android para evitar cuelgues)
+    if (!state.audioPlaying) toggleAudio();
+
+    // Iniciar lluvia tras revelarse
     setTimeout(() => {
-      if (!state.audioPlaying) toggleAudio();
-      triggerPetalRain(25);
+      triggerPetalRain(15);
     }, 350);
   };
 
@@ -117,7 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 2. GENERACIÓN DE PÉTALOS BOTÁNICOS (3 NIVELES + JITTER) ---
   function buildRealisticPetals() {
-    const tierConfig = [
+    const isMobile = window.innerWidth < 640;
+    const tierConfig = isMobile ? [
+      { name: 'outer', count: 12, baseLength: 70, baseWidth: 24, baseY: -24, tiltX: 14, offsetAngle: 0 },
+      // Capa media eliminada en móviles para ahorrar casi 100 nodos DOM 3D
+      { name: 'inner', count: 8, baseLength: 50, baseWidth: 20, baseY: -16, tiltX: -8, offsetAngle: 18 }
+    ] : [
       { name: 'outer', count: 22, baseLength: 82, baseWidth: 27, baseY: -32, tiltX: 14, offsetAngle: 0 },
       { name: 'middle', count: 18, baseLength: 74, baseWidth: 25, baseY: -26, tiltX: 6, offsetAngle: 10 },
       { name: 'inner', count: 15, baseLength: 60, baseWidth: 22, baseY: -20, tiltX: -8, offsetAngle: 18 }
@@ -665,8 +672,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // INICIALIZAR MARIPOSAS (Reducido a 3 para optimizar rendimiento)
+  // INICIALIZAR MARIPOSAS (Reducido o desactivado para móviles)
   function initMonarchButterflies() {
+    butterfliesLayer.innerHTML = '';
+    
+    // Las mariposas 3D son una de las principales causas de cuelgues (memory/gpu leak) en móviles
+    if (window.innerWidth < 640) {
+      state.butterflies = [];
+      return;
+    }
+    
     const monarchTypes = [
       {
         name: 'orange',
@@ -848,13 +863,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function playMagicalChime() {
-    initWebAudio();
-    if (!state.audioCtx) return;
-    const now = state.audioCtx.currentTime;
-    const chord = [587.33, 739.99, 880.00, 1174.66];
-    chord.forEach((note, index) => {
-      playMelodicNote(note, now + index * 0.08, 1.7, 0.05);
-    });
+    // DESACTIVADO: La creación de osciladores WebAudio en tiempo real (createOscillator) 
+    // a menudo causa deadlocks e inestabilidad del proceso de audio en iOS Safari y algunos Android.
+    // Como ya usamos el MP3 "Azul", nos libramos de esta carga.
   }
 
   function toggleAudio() {
