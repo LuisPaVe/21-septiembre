@@ -182,8 +182,8 @@ body {
 @media (max-width: 640px) {
   .flower-garden-container.mobile-vertical {
     /* Usamos una variable inyectada por JS, Safari iOS no soporta calc() con divisiones cruzadas en transform */
-    transform: scale(var(--mobile-scale, 0.55)) translateY(-5%);
-    transform-origin: center top;
+    transform: scale(var(--mobile-scale, 0.55));
+    transform-origin: center center;
   }
   
   .ambient-flower-glow {
