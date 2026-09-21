@@ -65,8 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const fCtx = fCanvas.getContext('2d');
       const size = 140;
-      fCanvas.width = size;
-      fCanvas.height = size;
+      // Mejorar nitidez en pantallas de celular (Retina)
+      const dpr = window.devicePixelRatio || 1;
+      fCanvas.width = size * dpr;
+      fCanvas.height = size * dpr;
+      fCtx.scale(dpr, dpr);
 
       const centerX = size / 2;
       const centerY = size / 2;
@@ -89,7 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = centerX + r * Math.cos(theta);
         const y = centerY + r * Math.sin(theta);
 
-        const dotRadius = 1.0 + (r / maxRadius) * 1.6;
+        // Aumentar ligeramente el tamaño del punto para que el centro se vea más tupido
+        const dotRadius = 1.3 + (r / maxRadius) * 2.0;
         const normalizedDist = r / maxRadius;
 
         fCtx.save();
@@ -140,8 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const sAngle = (360 / sepalCount) * s + (Math.random() * 4 - 2);
           const sepal = document.createElement('div');
           sepal.className = 'sepal';
-          const scaleJitter = 0.9 + Math.random() * 0.2;
-          sepal.style.transform = `rotate(${sAngle}deg) translateY(-26px) scale(${scaleJitter})`;
+          // En móviles, achicar los sépalos verdes para que no sobresalgan por encima de los pétalos amarillos
+          const isMobileScale = window.innerWidth < 640 ? 0.65 : 1;
+          const translateY = window.innerWidth < 640 ? '-18px' : '-26px';
+          const scaleJitter = (0.9 + Math.random() * 0.2) * isMobileScale;
+          sepal.style.transform = `rotate(${sAngle}deg) translateY(${translateY}) scale(${scaleJitter})`;
           sepalsContainer.appendChild(sepal);
         }
       }
