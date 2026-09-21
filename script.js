@@ -891,6 +891,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // --- CONTROL DE AUDIO EN SEGUNDO PLANO (MINIMIZAR/BLOQUEAR) ---
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      // Pausar siempre al minimizar para no gastar batería o asustar al usuario
+      bgMusic.pause();
+    } else {
+      // Reanudar automáticamente solo si el usuario no lo había silenciado manualmente
+      if (state.audioPlaying) {
+        bgMusic.play().catch(e => console.warn('No se pudo reanudar el audio automáticamente:', e));
+      }
+    }
+  });
+
   // --- 7. RE-FLORECER ANIMACIÓN ---
   function triggerReflower() {
     const stems = document.querySelectorAll('.stem-line');
