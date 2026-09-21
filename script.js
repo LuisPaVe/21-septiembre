@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!fCanvas) return;
 
       const fCtx = fCanvas.getContext('2d');
-      const size = 140;
+      const size = 70; // Debe coincidir con el CSS (.flower-center-fibonacci { width: 70px; })
       // Mejorar nitidez en pantallas de celular (Retina)
       const dpr = window.devicePixelRatio || 1;
       fCanvas.width = size * dpr;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const centerX = size / 2;
       const centerY = size / 2;
-      const maxRadius = (size / 2) - 4;
+      const maxRadius = (size / 2) - 2;
       const c = maxRadius / Math.sqrt(floretCount);
 
       const bgGrad = fCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const x = centerX + r * Math.cos(theta);
         const y = centerY + r * Math.sin(theta);
 
-        // Aumentar ligeramente el tamaño del punto para que el centro se vea más tupido
-        const dotRadius = 1.3 + (r / maxRadius) * 2.0;
+        // Aumentar la densidad y tamaño de las semillas para que se vea un patrón perfecto
+        const dotRadius = 0.9 + (r / maxRadius) * 1.6;
         const normalizedDist = r / maxRadius;
 
         fCtx.save();
