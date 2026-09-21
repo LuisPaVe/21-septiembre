@@ -178,11 +178,24 @@ body {
   z-index: 20;
 }
 
-/* Escala dinámica para móviles en vertical */
+/* Escala dinámica para móviles en vertical y desactivación de filtros pesados */
 @media (max-width: 640px) {
   .flower-garden-container.mobile-vertical {
     transform: scale(0.65) translateY(-5%);
     transform-origin: center top;
+  }
+  
+  .ambient-flower-glow {
+    display: none !important; /* Evita que blur(60px) colapse la GPU */
+  }
+  
+  .botanical-petal {
+    box-shadow: none !important; /* Evitar 3 capas de box-shadow por cada uno de los 200+ pétalos */
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)) !important;
+  }
+  
+  .night-sky-background {
+    background-attachment: scroll !important;
   }
 }
 

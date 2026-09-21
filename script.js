@@ -168,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 3. REACCIÓN FÍSICA AL CURSOR ---
   function setupInteractiveSway() {
+    if (window.innerWidth < 640) return; // Evitar cuelgues procesando eventos táctiles en móviles
+
     const flowerElements = document.querySelectorAll('.flower-item');
 
     window.addEventListener('pointermove', (e) => {
@@ -192,7 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- 4. MOTOR DE PARTICULAS (CANVAS 60FPS: ESCARCHA BRILLANTE, POLEN Y PÉTALOS) ---
   function resizeCanvas() {
-    const dpr = window.devicePixelRatio || 1;
+    // Reducir carga gráfica (devicePixelRatio) en móviles a 1 en vez de 3x o 4x
+    const dpr = window.innerWidth < 640 ? 1 : (window.devicePixelRatio || 1);
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
     ctx.scale(dpr, dpr);
