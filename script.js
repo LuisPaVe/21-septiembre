@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       if (!state.audioPlaying) toggleAudio();
       triggerPetalRain(25);
-    }, 800);
+    }, 350);
   };
 
   // --- 1. FILOTAXIS DE FIBONACCI: MICRO-SEMILLAS EN CANVAS ---
@@ -252,8 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.translate(this.x, this.y);
 
       ctx.fillStyle = this.color;
-      ctx.shadowColor = this.glow;
-      ctx.shadowBlur = 12;
+      // Removido shadowColor y shadowBlur para optimizar rendimiento radicalmente
       ctx.globalAlpha = alpha;
 
       // Estrella de 4 puntas de escarcha
@@ -315,8 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(253, 224, 71, ${this.alpha})`;
-      ctx.shadowColor = 'rgba(250, 204, 21, 0.85)';
-      ctx.shadowBlur = 10;
+      // Removido shadowColor y shadowBlur
       ctx.fill();
       ctx.restore();
     }
@@ -375,8 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
       grad.addColorStop(1, `rgba(202, 138, 4, ${this.alpha * 0.85})`);
 
       ctx.fillStyle = grad;
-      ctx.shadowColor = `rgba(250, 204, 21, ${this.alpha * 0.55})`;
-      ctx.shadowBlur = 9;
+      // Removido shadowColor y shadowBlur
       ctx.fill();
       ctx.restore();
     }
@@ -406,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const el = document.createElement('div');
       el.className = 'butterfly';
       el.id = `monarch-${this.id}`;
-      el.style.filter = `drop-shadow(0 0 18px ${this.colorConfig.glow}) drop-shadow(0 8px 20px rgba(0,0,0,0.65))`;
+      // Removido filter: drop-shadow pesado de la mariposa para liberar GPU
 
       const c = this.colorConfig;
 
@@ -648,15 +645,16 @@ document.addEventListener('DOMContentLoaded', () => {
       // Inclinación bancaria en giros
       const bankRoll = Math.max(-28, Math.min(28, this.vx * 3.5));
 
-      // EMISIÓN CONSTANTE DE ESCARCHA EN CADA CUADRO (STREAM DE DIAMANTES Y COLORES)
-      state.glitterTrail.push(
-        new GlitterSparkle(this.x, this.y + 18, this.vx * 0.35, this.vy * 0.35, this.colorConfig.name)
-      );
-      // Segunda chispa frecuente para mayor densidad
-      if (Math.random() < 0.65) {
+      // EMISIÓN DE ESCARCHA OPTIMIZADA (Menos frecuente para evitar sobrecarga)
+      if (Math.random() < 0.15) { // Solo 15% de probabilidad por cuadro en lugar de siempre
         state.glitterTrail.push(
-          new GlitterSparkle(this.x + (Math.random() * 16 - 8), this.y + 24, this.vx * 0.2, this.vy * 0.2, this.colorConfig.name)
+          new GlitterSparkle(this.x, this.y + 18, this.vx * 0.35, this.vy * 0.35, this.colorConfig.name)
         );
+      }
+      
+      // Limitar escarcha activa globalmente a máximo 150
+      if (state.glitterTrail.length > 150) {
+        state.glitterTrail.shift();
       }
 
       // Aplicar transformación 3D centrada en el cuerpo
@@ -664,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // INICIALIZAR 5 GRANDES MARIPOSAS MONARCAS DE COLORES VIBRANTES
+  // INICIALIZAR MARIPOSAS (Reducido a 3 para optimizar rendimiento)
   function initMonarchButterflies() {
     const monarchTypes = [
       {
@@ -673,7 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
         top: '#fed7aa',
         mid: '#f97316',
         base: '#9a3412',
-        glow: 'rgba(249, 115, 22, 0.95)',
+        glow: 'rgba(249, 115, 22, 0.8)',
         zone: 'left'
       },
       {
@@ -682,7 +680,7 @@ document.addEventListener('DOMContentLoaded', () => {
         top: '#bae6fd',
         mid: '#0284c7',
         base: '#0c4a6e',
-        glow: 'rgba(14, 165, 233, 0.95)',
+        glow: 'rgba(14, 165, 233, 0.8)',
         zone: 'right'
       },
       {
@@ -691,26 +689,8 @@ document.addEventListener('DOMContentLoaded', () => {
         top: '#fef9c3',
         mid: '#facc15',
         base: '#854d0e',
-        glow: 'rgba(250, 204, 21, 0.95)',
+        glow: 'rgba(250, 204, 21, 0.8)',
         zone: 'center'
-      },
-      {
-        name: 'purple',
-        label: 'Monarca Rubí / Amatista',
-        top: '#fbcfe8',
-        mid: '#d946ef',
-        base: '#701a75',
-        glow: 'rgba(217, 70, 239, 0.95)',
-        zone: 'right'
-      },
-      {
-        name: 'emerald',
-        label: 'Monarca Esmeralda Jade',
-        top: '#a7f3d0',
-        mid: '#10b981',
-        base: '#064e3b',
-        glow: 'rgba(16, 185, 129, 0.95)',
-        zone: 'left'
       }
     ];
 
@@ -725,8 +705,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Luciérnagas
-  const fireflyCount = Math.min(window.innerWidth < 640 ? 25 : 50, 55);
+  // Luciérnagas (Cantidad optimizada)
+  const fireflyCount = Math.min(window.innerWidth < 640 ? 12 : 20, 25);
   for (let i = 0; i < fireflyCount; i++) {
     state.fireflies.push(new Firefly());
   }

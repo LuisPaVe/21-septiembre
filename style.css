@@ -824,7 +824,7 @@ body {
   background: radial-gradient(circle at center, rgba(15, 23, 42, 0.95), rgba(5, 6, 10, 1));
   z-index: 200;
   backdrop-filter: blur(24px);
-  transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1), visibility 800ms;
+  transition: opacity 300ms ease, visibility 300ms;
 }
 
 #intro-screen.hidden {
@@ -868,7 +868,7 @@ body {
 .hidden-initially {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 1.2s ease-in;
+  transition: opacity 400ms ease-out;
 }
 
 .hidden-initially.visible {
